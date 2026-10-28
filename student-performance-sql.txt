@@ -1,0 +1,46 @@
+DROP TABLE IF EXISTS students;
+CREATE TABLE students (
+    student_id INTEGER PRIMARY KEY,
+    name       VARCHAR(50) NOT NULL,
+    department VARCHAR(30),
+    semester   INTEGER,
+    math       INTEGER,
+    physics    INTEGER,
+    programming INTEGER
+);
+INSERT INTO students (student_id, name, department, semester, math, physics, programming) VALUES
+(1, 'Rahim',  'EEE', 3, 78, 82, 90),
+(2, 'Karim',  'CSE', 3, 65, 70, 88),
+(3, 'Nusrat', 'EEE', 5, 92, 88, 95),
+(4, 'Sadia',  'CSE', 5, 55, 60, 72),
+(5, 'Tanvir', 'EEE', 3, 45, 50, 58),
+(6, 'Mim',    'BBA', 1, 80, 75, 68),
+(7, 'Arif',   'CSE', 1, 70, 66, 85),
+(8, 'Lamia',  'EEE', 5, 88, 91, 84);
+SELECT * FROM students;
+--1. Only EEE students
+Select name, semester FROM students WHERE department = 'EEE';
+--2. Programming above 80, best first
+SELECT name, programming FROM students
+WHERE programming > 80
+ORDER BY programming DESC;
+--4. Department-wise summary
+SELECT department, COUNT(*) AS total_students, AVG(programming) AS avg_programming
+FROM students
+GROUP BY department;
+--5. Grades
+SELECT name,
+       (math + physics + programming) / 3.0 AS average,
+       CASE
+           WHEN (math + physics + programming) / 3.0 >= 80 THEN 'A'
+           WHEN (math + physics + programming) /3.0 >=65 THEN 'B'
+           WHEN (math + physics + programming) /3.0 >= 50 THEN 'C'
+           ELSE 'Fail'
+         END AS grade
+FROM students;
+-- Top scorer in Math
+SELECT name, math FROM students ORDER BY math DESC LIMIT 1;
+-- Top scorer in Physics
+SELECT name, physics FROM students ORDER BY physics DESC LIMIT 1;
+-- Top scorer in Programming
+SELECT name, programming FROM students ORDER BY programming DESC LIMIT 1;
